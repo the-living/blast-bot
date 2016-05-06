@@ -42,9 +42,9 @@
 // Define serial communication protocol
 // These control communication with the software issuing
 // GCODE commands
-#define BAUD          	(57600) // Serial comm bitrate
+#define BAUD          	(115200) // Serial comm bitrate
 #define MAX_BUF       	(64) // Serial input buffer size
-#define TIMEOUT_OK    	(1000) // Timeout length
+#define TIMEOUT_OK    	(200) // Timeout length
 
 // STEPPER MOTOR CONTROLS
 // MX - X-axis motors
