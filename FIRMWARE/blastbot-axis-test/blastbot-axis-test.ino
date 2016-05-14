@@ -6,16 +6,16 @@
 //AXIS Setup
 
 //un-comment this line only for X-axis
-AccelStepper stepper( AccelStepper::DRIVER, 2, 3);
+//AccelStepper stepper( AccelStepper::DRIVER, 2, 3);
 
 //uncomment this line only for Y-axis
-//AccelStepper stepper( AccelStepper::DRIVER, 5, 6);
+AccelStepper stepper( AccelStepper::DRIVER, 5, 6);
 
 void setup()
 {
-	stepper.setMaxSpeed(200);
+	stepper.setMaxSpeed(250);
 	stepper.setAcceleration(50);
-	stepper.moveTo(500);
+	stepper.moveTo(1000);
 }
 
 void loop()

@@ -37,14 +37,14 @@
 // CONSTANTS
 //------------------------------------------------------------------------------
 // VERBOSE mode for debugging
-#define VERBOSE 		(0) // 0: False | 1: True
+#define VERBOSE 		(1) // 0: False | 1: True
 
 // Define serial communication protocol
 // These control communication with the software issuing
 // GCODE commands
 #define BAUD          	(115200) // Serial comm bitrate
 #define MAX_BUF       	(64) // Serial input buffer size
-#define TIMEOUT_OK    	(200) // Timeout length
+#define TIMEOUT_OK    	(1000) // Timeout length
 
 // STEPPER MOTOR CONTROLS
 // MX - X-axis motors
@@ -58,12 +58,13 @@
 // Stepper drivers are paired and recieve
 // identical step & dir signals
 // and move in opposite directions
-#define MY_STEP       	(4) //MZ Stepping Signal
-#define MY_DIR        	(5) //MZ Direction Signal
+#define MY_STEP       	(5) //MY Stepping Signal
+#define MY_DIR        	(6) //MY Direction Signal
 
 // BLAST CONTROL
 // Pin for controlling blasting on/off toggle
-#define BLAST		(8)
+#define BLAST		(12)
+#define AIR     (13)
 
 // Define stepper motor specs
 #define STEPS_PER_TURN  (200) // Steps per full revolution
@@ -75,13 +76,13 @@
 #define PULLEY_TEETH_X 	(20)
 #define PULLEY_TEETH_Y 	(20)
 #define BELT_REDUCTION_X	(1)
-#define BELT_REDUCTION_Y	(2)
+#define BELT_REDUCTION_Y	(1)
 
 // Define forward motor direction
 // 0 == clockwise
 // 1 == counterclockwise
 #define MX_FORWARD    	(1) // MX Forward Direction
-#define MY_FORWARD   	(0) // MZ Forward Direction
+#define MY_FORWARD   	(1) // MZ Forward Direction
 
 // Define geometry motions and resolution
 // for arc directions
@@ -102,7 +103,7 @@
 static AccelStepper mx( 1, MX_STEP, MX_DIR ); // AccelStepper object for MX
 static AccelStepper my( 1, MY_STEP, MY_DIR ); // AccelStepper object for MY
 
-static int microstep_x = 8; // Microsteps per full step on X-axis
+static int microstep_x = 2; // Microsteps per full step on X-axis
 static int microstep_y = 8; // Microsteps per full step on Z-axis 
 
 static float feed_x; // Feedrate along x-axis (step/s)
@@ -111,8 +112,10 @@ static float feed_y; // Feedrate along y-axi (step/s)
 static bool accel = 0; // Enable (1) / Disable (0) acceleration
 static bool bias = 1; // Enable (1) / Disable (0) movement bias
 
-static float feedrate = 100; // Desired feedrate (mm/s)
+static float feedrate = 20; // Desired feedrate (mm/s)
 
+static float x_limit = 200.0;
+static float y_limit = 80.0;
 static int max_speed_x; // Max speed along X-axis (mm/s)
 static int max_speed_y; // Max speed along Y-axis (mm/s)
 
@@ -134,10 +137,10 @@ static MultiStepper steppers;
 // |             X             | <-- X = ORIGIN
 // -----------------------------
 
-static float limit_top = 305.0; // Distance to top blast limit
-static float limit_bottom = -305.0; // Distance to bottom blast limit
-static float limit_right = 915.0; // Distance to right blast limit
-static float limit_left = -915.0; // Distance to left blast limit
+static float limit_top = 650.0; // Distance to top blast limit
+static float limit_bottom = 0.0; // Distance to bottom blast limit
+static float limit_right = 1950.0; // Distance to right blast limit
+static float limit_left = 0.0; // Distance to left blast limit
 
 static bool hardLimits = 1; // Disable (0) / Enable (1) Movement Constraints
 
@@ -162,6 +165,13 @@ static void getStepDist(){
 	dist_per_step_X = (PULLEY_TEETH_X * BELT_PITCH) / (STEPS_PER_TURN * BELT_REDUCTION_X * microstep_x);
 	dist_per_step_Y = (PULLEY_TEETH_Y * BELT_PITCH) / (STEPS_PER_TURN * BELT_REDUCTION_Y * microstep_y);
 
+  if( VERBOSE ){
+    Serial.print( "DIST PER STEP X: ");
+    Serial.println( dist_per_step_X );
+    Serial.print( "DIST PER STEP Y: ");
+    Serial.println( dist_per_step_Y );
+  }
+
 }
 
 static void calcMaxSpeed(){
@@ -179,6 +189,13 @@ static void calcMaxSpeed(){
     max_speed_x = min(max_speed_x, max_speed_y);
     max_speed_y = min(max_speed_y, max_speed_x);
   }
+
+  if( VERBOSE ){
+    Serial.print("MAX SPEED X: ");
+    Serial.println( max_speed_x );
+    Serial.print("MAX SPEED Y: ");
+    Serial.println( max_speed_y );
+  }
 }
 
 static void setFeedrate( float x, float y, float f){
@@ -193,13 +210,24 @@ static void setFeedrate( float x, float y, float f){
 	float vx = min(f * dx / vec , max_speed_x); // Cosine of movement vector angle
 	float vy = min(f * dy / vec , max_speed_y); // Sine of movement vector angle
 
-  feed_x = vx / dist_per_step_X; // Convert X-axis mm/sec to steps/sec
-  feed_y = vy / dist_per_step_Y; // Convert Y-axis mm/sec to steps/sec
+  feed_x = max(vx / dist_per_step_X, MIN_FEEDRATE); // Convert X-axis mm/sec to steps/sec
+  feed_y = max(vy / dist_per_step_Y, MIN_FEEDRATE); // Convert Y-axis mm/sec to steps/sec
 
   // Set motor speeds to limit to desired feedrate
   // MultiStepper .runSpeedToPosition() refers to maxSpeed for coordinated motion planning
-  mx.setMaxSpeed( max(feed_x, MIN_FEEDRATE) );
-  my.setMaxSpeed( max(feed_y, MIN_FEEDRATE) );
+  mx.setMaxSpeed( feed_x );
+  my.setMaxSpeed( feed_y );
+
+  if( VERBOSE ){
+    Serial.print("F: ");
+    Serial.println( f );
+    Serial.print("X_F: ");
+    Serial.println( feed_x );
+    Serial.print("Y_F: ");
+    Serial.println( feed_y );
+  }
+
+
 
   // Update acceleration settings
   // Acceleration not used by MultiStepper
@@ -248,10 +276,8 @@ static void FK(float l1, float l2, float &x, float &y){
 //------------------------------------------------------------------------------
 
 void pause( long ms ) {
-
   delay( ms / 1000 ); // Whole second delay
   delayMicroseconds( ms % 1000 ); // Microsecond delay for remainder
-
 }
 
 static void line( float x, float y) {
@@ -392,7 +418,40 @@ void where(){
   Serial.print( "BIAS: ");
   Serial.println( bias );
 
+  Serial.print( "MICROSTEP X: ");
+  Serial.println( microstep_x );
+  Serial.print( "MICROSTEP Y: ");
+  Serial.println( microstep_y );
 
+
+}
+
+// AIR/BLAST CONTROL
+//------------------------------------------------------------------------------
+
+static void blastToggle( int toggle ){
+  digitalWrite( BLAST, toggle );
+  digitalWrite( AIR, toggle );
+
+  if( VERBOSE ){
+    if( toggle ){
+      Serial.println( "BLAST / AIR ON" );
+    } else{
+      Serial.println( "BLAST/AIR OFF" );
+    }
+  }
+}
+
+static void airToggle( int toggle ){
+  digitalWrite( AIR, toggle );
+
+  if( VERBOSE ){
+    if( toggle ){
+      Serial.println( "AIR ON" );
+    } else{
+      Serial.println( "AIR OFF" );
+    }
+  }
 }
 
 // COMMAND METHODS
@@ -539,7 +598,32 @@ static void processCommand() {
   //---------------------------
   cmd = parsenumber( 'M', -1 );
   switch ( cmd ) {
-    case 0: // UNUSED
+    case 0: { //RELATIVE MOVE COMMAND
+      int x_steps = parsenumber( 'X', 0 );
+      int y_steps = parsenumber( 'Y', 0 );
+
+      if ( VERBOSE ){
+        if ( x_steps ){
+          Serial.print( "X JOG: " );
+          Serial.println( x_steps );
+        }
+        if ( y_steps ){
+          Serial.print( "Y JOG: " );
+          Serial.println( y_steps );
+        }
+      }
+
+      mx.move( x_steps );
+      mx.runToPosition();
+
+      my.move( y_steps );
+      my.runToPosition();
+
+      FK( mx.currentPosition(), my.currentPosition(), posx, posy );
+
+      break;
+
+    }
     case 1: // UNUSED
 
     case 10: {
@@ -555,6 +639,12 @@ static void processCommand() {
     case 21: {
         my.move(-jog_dist * parsenumber( 'S', 1 )); my.runToPosition(); break; // Jog MY stepper forward
       }
+    
+    case 50: blastToggle( 1 ); break;
+    case 51: blastToggle( 0 ); break;
+
+    case 60: airToggle( 1 ); break;
+    case 61: airToggle( 0 ); break;
 
     case 100: { // Set stepper positions manually to O
         teleport( parsenumber( 'X', 0 ), parsenumber( 'Y', 0 ) );
@@ -579,16 +669,24 @@ static void processCommand() {
         }
 
         // Enable sprayer if G01 command
+        blastToggle( cmd );
+        if( cmd != 1){
+          airToggle( 1 );
+        }
+        
+        /*
         if ( cmd == 1) {
           digitalWrite( BLAST, 1 );
         } else {
           digitalWrite( BLAST, 0 );
         }
+        */
 
         line_safe( parsenumber( 'X', posx ), parsenumber( 'Y', posy ) );
 
         // Disengage sprayer
-        digitalWrite( BLAST, 0 );
+        blastToggle( 0 );
+        //digitalWrite( BLAST, 0 );
         break;
       }
     case 2: //G02 - CW Arc command
@@ -604,7 +702,8 @@ static void processCommand() {
         }
 
         // Enable sprayer
-        digitalWrite( BLAST, 1 );
+        blastToggle( 1 );
+        //digitalWrite( BLAST, 1 );
 
         feedrate = parsenumber( 'F', feedrate );
 
@@ -615,12 +714,18 @@ static void processCommand() {
              ( cmd == 2 ) ? ARC_CCW : ARC_CW );
 
         // Disable sprayer
-        digitalWrite( BLAST, 0 );
+        blastToggle( 0 );
+        //digitalWrite( BLAST, 0 );
 
         break;
       }
-    case 4: { // Pause command
+    case 4: //Pause command
+    case 5: { // Dwell command
+        blastToggle( cmd == 5);
+
         pause( parsenumber( 'S', 0 ) + parsenumber( 'P', 0 ) * 1000.0f );
+        
+        blastToggle( 0 );
         break;
       }
   }
@@ -661,13 +766,16 @@ void Serial_listen() {
 void setup() {
 
   //pin settings
-  pinMode(MX_STEP, OUTPUT);
-  pinMode(MX_DIR, OUTPUT);
+  pinMode( MX_STEP, OUTPUT );
+  pinMode( MX_DIR, OUTPUT );
 
-  pinMode(MY_STEP, OUTPUT);
-  pinMode(MY_DIR, OUTPUT);
+  pinMode( MY_STEP, OUTPUT );
+  pinMode( MY_DIR, OUTPUT );
 
-  pinMode(BLAST, OUTPUT);
+  pinMode( BLAST, OUTPUT );
+  pinMode( AIR, OUTPUT );
+  digitalWrite( BLAST, 0 );
+  digitalWrite( AIR, 0 );
 
   //initialize serial read buffer
   sofar = 0;
@@ -679,15 +787,20 @@ void setup() {
   my.setPinsInverted( MY_FORWARD, false, false ); //direction inversion for Y
 
   // set stepper speed & acceleration
+  getStepDist();
   calcMaxSpeed();
 
   // add steppers to MultiStepper object
   steppers.addStepper( mx );
   steppers.addStepper( my );
 
-  //initialize plotter positions
-  getStepDist();
-  
+  // toggle air on and off
+  airToggle( 1 );
+  delay( 2000 );
+  airToggle( 0 );
+  delay( 500 );
+
+  //initialize plotter positions  
   if( VERBOSE ){
   	where();
   }
