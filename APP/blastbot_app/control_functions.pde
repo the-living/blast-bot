@@ -33,7 +33,54 @@ void controlEvent( ControlEvent theEvent ) {
     //--------------------------------------------------------------------------
     if ( theEvent.getName().equals("test_pattern") ) {
 
-      String lines[] = loadStrings("hallo.txt");
+      String lines[] = loadStrings("toRun.txt");
+      for (int i = 0; i < lines.length; i++) {
+        GB.write( lines[i] );
+      }
+      
+    }
+    
+    //GCODE File Handling
+    //--------------------------------------------------------------------------
+    //REFRESH
+    if( theEvent.getName().equals("refresh") ){
+       checkFiles();
+    }
+    
+    //RUN L CLEAN
+    if ( theEvent.getName().equals("run_l_clean") ) {
+
+      String lines[] = loadStrings("L_CLEAN.txt");
+      for (int i = 0; i < lines.length; i++) {
+        GB.write( lines[i] );
+      }
+      
+    }
+    
+    //RUN L BLAST
+    if ( theEvent.getName().equals("run_l_blast") ) {
+
+      String lines[] = loadStrings("L_BLAST.txt");
+      for (int i = 0; i < lines.length; i++) {
+        GB.write( lines[i] );
+      }
+      
+    }
+    
+    //RUN R CLEAN
+    if ( theEvent.getName().equals("run_r_clean") ) {
+
+      String lines[] = loadStrings("R_CLEAN.txt");
+      for (int i = 0; i < lines.length; i++) {
+        GB.write( lines[i] );
+      }
+      
+    }
+    
+    //RUN R BLAST
+    if ( theEvent.getName().equals("run_r_blast") ) {
+
+      String lines[] = loadStrings("R_BLAST.txt");
       for (int i = 0; i < lines.length; i++) {
         GB.write( lines[i] );
       }
@@ -161,7 +208,7 @@ void controlEvent( ControlEvent theEvent ) {
     if ( theEvent.getName().equals("fast_mode") ) {
       String cmd;
       
-      if( theEvent.controller().getValue()==1 ){
+      if( cP5.get(Toggle.class, "fast_mode").getValue()==1 ){
         cmd = gcodeSpeedSetting( fast_speed );
       } else{
         cmd = gcodeSpeedSetting( draw_speed );

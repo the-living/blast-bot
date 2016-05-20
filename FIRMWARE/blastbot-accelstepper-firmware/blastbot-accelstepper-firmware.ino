@@ -37,14 +37,14 @@
 // CONSTANTS
 //------------------------------------------------------------------------------
 // VERBOSE mode for debugging
-#define VERBOSE 		(1) // 0: False | 1: True
+#define VERBOSE 		(0) // 0: False | 1: True
 
 // Define serial communication protocol
 // These control communication with the software issuing
 // GCODE commands
 #define BAUD          	(115200) // Serial comm bitrate
 #define MAX_BUF       	(64) // Serial input buffer size
-#define TIMEOUT_OK    	(1000) // Timeout length
+#define TIMEOUT_OK    	(500) // Timeout length
 
 // STEPPER MOTOR CONTROLS
 // MX - X-axis motors
@@ -70,6 +70,8 @@
 #define STEPS_PER_TURN  (200) // Steps per full revolution
 #define MIN_FEEDRATE	(1) // 1 Step / Second
 #define MAX_FEEDRATE	(10000) //10,000 Steps / Second (Upper Limit of Arduino)
+#define TOPSPEED_X (300.0) //Abs. Max speed along X-AXIS
+#define TOPSPEED_Y (80.0) //Abs. Max speed along Y-AXIS
 
 
 #define BELT_PITCH 		(3.0) // GT3 Timing Belt
@@ -137,8 +139,8 @@ static MultiStepper steppers;
 // |             X             | <-- X = ORIGIN
 // -----------------------------
 
-static float limit_top = 650.0; // Distance to top blast limit
-static float limit_bottom = 0.0; // Distance to bottom blast limit
+static float limit_top = 550.0; // Distance to top blast limit
+static float limit_bottom = -100.0; // Distance to bottom blast limit
 static float limit_right = 1950.0; // Distance to right blast limit
 static float limit_left = 0.0; // Distance to left blast limit
 
@@ -179,8 +181,8 @@ static void calcMaxSpeed(){
 	// Max speed is limited by clock-rate of Arduino which can output
 	// approx. 10,000 steps / second
 
-	max_speed_x = MAX_FEEDRATE * dist_per_step_X;
-	max_speed_y = MAX_FEEDRATE * dist_per_step_Y;
+	max_speed_x = min( MAX_FEEDRATE * dist_per_step_X, TOPSPEED_X);
+	max_speed_y = min( MAX_FEEDRATE * dist_per_step_Y, TOPSPEED_Y);
 
   // MOVEMENT BIAS
   // If disabled, limits speeds to slowest axis
@@ -531,7 +533,7 @@ static void processCommand() {
         limit_right = parsenumber( 'R', limit_right );
         limit_left = parsenumber( 'L', limit_left );
 
-        if( VERBOSE ){
+        if( 1 ){
         	Serial.println( "LIMITS" );
         	Serial.print( "T:" );
         	Serial.print( limit_top );
@@ -556,7 +558,7 @@ static void processCommand() {
         microstep_x = parsenumber( 'X', microstep_x );
         microstep_y = parsenumber( 'Y', microstep_y );
 
-        if( VERBOSE ){
+        if( 1 ){
         	Serial.println( "MICROSTEPPING"  );
         	Serial.print( "X: " );
         	Serial.print( microstep_x );
@@ -572,7 +574,7 @@ static void processCommand() {
         accel = ( parsenumber('A', accel) == 1 );
         bias = ( parsenumber( 'B', bias) == 1 );
         
-        if( VERBOSE ){
+        if( 1 ){
         	Serial.print( "F: ");
         	Serial.println( feedrate );
           Serial.print( "ACCEL: " );
@@ -599,8 +601,8 @@ static void processCommand() {
   cmd = parsenumber( 'M', -1 );
   switch ( cmd ) {
     case 0: { //RELATIVE MOVE COMMAND
-      int x_steps = parsenumber( 'X', 0 );
-      int y_steps = parsenumber( 'Y', 0 );
+      int x_steps = parsenumber( 'X', 0 )/dist_per_step_X;
+      int y_steps = parsenumber( 'Y', 0 )/dist_per_step_Y;
 
       if ( VERBOSE ){
         if ( x_steps ){
@@ -612,10 +614,13 @@ static void processCommand() {
           Serial.println( y_steps );
         }
       }
-
+      mx.setSpeed( min(x_steps, TOPSPEED_X/dist_per_step_X) );
+      mx.setAcceleration( min(x_steps, TOPSPEED_X/dist_per_step_X) );
       mx.move( x_steps );
       mx.runToPosition();
 
+      my.setSpeed( min(y_steps, TOPSPEED_Y/dist_per_step_Y) );
+      my.setAcceleration( min(y_steps, TOPSPEED_Y/dist_per_step_Y) );
       my.move( y_steps );
       my.runToPosition();
 
@@ -627,17 +632,33 @@ static void processCommand() {
     case 1: // UNUSED
 
     case 10: {
-        mx.move(jog_dist * parsenumber( 'S', 1 )); mx.runToPosition(); break; // Jog MX stepper forward
+        mx.setSpeed( TOPSPEED_X/2.0 );
+        mx.setAcceleration( TOPSPEED_X/2.0 );
+        mx.move(jog_dist * parsenumber( 'S', 1 )/dist_per_step_X);
+        mx.runToPosition();
+        break; // Jog MX stepper forward
       }
     case 11: {
-        mx.move(-jog_dist * parsenumber( 'S', 1 )); mx.runToPosition(); break; // Jog MX stepper forward
+        mx.setSpeed( TOPSPEED_X/2.0 );
+        mx.setAcceleration( TOPSPEED_X/2.0 );
+        mx.move(-jog_dist * parsenumber( 'S', 1 )/dist_per_step_X);
+        mx.runToPosition();
+        break; // Jog MX stepper forward
       }
 
     case 20: {
-        my.move(jog_dist * parsenumber( 'S', 1 )); my.runToPosition(); break; // Jog MY stepper forward
+        my.setSpeed( TOPSPEED_Y/2.0 );
+        my.setAcceleration( TOPSPEED_Y/2.0 );
+        my.move(jog_dist * parsenumber( 'S', 1 )/dist_per_step_Y);
+        my.runToPosition();
+        break; // Jog MY stepper forward
       }
     case 21: {
-        my.move(-jog_dist * parsenumber( 'S', 1 )); my.runToPosition(); break; // Jog MY stepper forward
+        my.setSpeed( TOPSPEED_Y/2.0 );
+        my.setAcceleration( TOPSPEED_Y/2.0 );
+        my.move(-jog_dist * parsenumber( 'S', 1 )/dist_per_step_Y);
+        my.runToPosition();
+        break; // Jog MY stepper forward
       }
     
     case 50: blastToggle( 1 ); break;

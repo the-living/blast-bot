@@ -17,7 +17,7 @@ void setupControls(){
   //---------------------------------------------------------------------------
   //Issues typed out GCODE command
   cP5.addTextfield("cmd_entry")
-  .setPosition( 50, 650 )
+  .setPosition( 50, 620 )
   .setSize( 700, 50 )
   .setFont( fontL )
   .setFocus( true )
@@ -29,6 +29,67 @@ void setupControls(){
   .setFont(fontM)
   .alignX(ControlP5.LEFT)
   .setText("Manual GCODE Entry")
+  ;
+  
+  //FILE CONTROLS
+  cP5.addBang("refresh")
+  .setPosition(850,100)
+  .setSize(250, 25)
+  .setTriggerEvent(Bang.RELEASE)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(255)
+  .setFont(fontM)
+  .setText("REFRESH")
+  ;
+  
+  cP5.addBang("run_l_clean")
+  .setPosition(850,225)
+  .setSize(500, 45)
+  .setTriggerEvent(Bang.RELEASE)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(255)
+  .setFont(fontM)
+  .setText("RUN L CLEANING")
+  ;
+  
+  cP5.addBang("run_l_blast")
+  .setPosition(850,275)
+  .setSize(500, 45)
+  .setTriggerEvent(Bang.RELEASE)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(255)
+  .setFont(fontL)
+  .setText("RUN L BLASTING")
+  ;
+  
+  cP5.addBang("run_r_clean")
+  .setPosition(850,425)
+  .setSize(500, 45)
+  .setTriggerEvent(Bang.RELEASE)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(255)
+  .setFont(fontM)
+  .setText("RUN R CLEANING")
+  ;
+  
+  cP5.addBang("run_r_blast")
+  .setPosition(850,475)
+  .setSize(500, 45)
+  .setTriggerEvent(Bang.RELEASE)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(255)
+  .setFont(fontL)
+  .setText("RUN R BLASTING")
   ;
 
   //MOTOR TOGGLES

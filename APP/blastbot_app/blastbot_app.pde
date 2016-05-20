@@ -44,6 +44,8 @@ Serial myPort; //create a serial port object
 
 //communication buffers
 String val; //create a buffer to hold RX data from serial port
+ArrayList<String> lastVal;
+String lastSent = "";
 GCodeBuffer GB; //buffer for TX GCode Commands
 int lineCount = 0; //index to keep track of multi-line commands
 
@@ -68,6 +70,16 @@ float posx, posy;
 //array for issuing individual motor commands
 boolean[] motors = new boolean[4];
 
+//Strings for displaying board names
+String boardName;
+boolean L_blast = false;
+boolean R_blast = false;
+boolean L_clean = false;
+boolean R_clean = false;
+
+PShape Lboard_svg;
+PShape Rboard_svg;
+
 
 //------------------------------------------------------------------------------
 // SETUP
@@ -79,6 +91,7 @@ void setup() {
 
   background(mainColor);
 
+  lastVal = new ArrayList<String>();
 
   //SERIAL CONNECTION
   String portName = Serial.list()[0];
@@ -102,7 +115,9 @@ void setup() {
   //INITIALIZE UX
   cP5 = new ControlP5(this);
   setupControls();
-
+  
+  
+  checkFiles();
   //SET DEFAULT FONT
   //textFont(fontM);
 }
@@ -112,7 +127,7 @@ void setup() {
 //------------------------------------------------------------------------------
 void settings() {
 
-  size(800, 800);
+  size(1380, 900);
 }
 
 //------------------------------------------------------------------------------
@@ -120,16 +135,46 @@ void settings() {
 //------------------------------------------------------------------------------
 void draw() {
 
+  //checkFiles();
+
+  //fill(mainColor);
+  //rect(0,820,height,820);
   background(mainColor);
+
+  fill(255);
+  rect(810, 0, width, height);
+
   fill(0);
-  rect(0, 600, 800, 200);
+  textFont( fontL, 50 );
+  text(boardName, 850, 90);
+  
+  float scalar = 500.0 / Lboard_svg.width;
+  shape(Lboard_svg, 850, 215, Lboard_svg.width*scalar, Lboard_svg.height*scalar);
+
+  if (!R_blast) {
+    shape(Rboard_svg, 850, 415, -Rboard_svg.width*scalar, Rboard_svg.height*scalar);
+  }
+
+  fill(0);
+  rect(0, 600, 800, 300);
 
   noFill();
   rect(25, 25, 550, 550);
-  //line( 600, 0, 600, height);
 
   //TX-RX over Serial port
   serialRun();
+  stroke(255);
+  line(0, 700, 800, 700);
+  noStroke();
+  
+  textFont(fontM, 22);
+  fill(0,255,0);
+  text(lastSent, 50, 730);
+  
+  fill(255, 0, 0);
+  for ( int i = 0; i < lastVal.size(); i++ ) {
+    text(lastVal.get(i), 50, 760+i*28);
+  }
 }
 
 //Serial Port Communication
@@ -145,15 +190,27 @@ void serialRun() {
     //Arduino firmware signals readiness with a ">"
     if (val.equals("\n> ") ) {
       //println( val );
+      lastSent="";
       //Check if the GCodeBuffer contains commands
       if ( GB.size() > 0 ) {
         String s = GB.sendNext();
         myPort.write(s);
         //Echo command to debug panel
         println("sent: " + s);
+        lastSent = s;
       }
     } else {
       println( "recieved: " + val );
+
+      if (val.length() > 0 && val != " ") {
+        String[] temp = split(val, "\n");
+        lastVal.clear();
+        for (int i = 0; i < temp.length; i++) {
+          if (temp[i].length() > 1) {
+            lastVal.add(temp[i]);
+          }
+        }
+      }
     }
   }
 }
