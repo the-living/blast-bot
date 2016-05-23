@@ -45,7 +45,7 @@ void setupControls(){
   ;
   
   cP5.addBang("run_l_clean")
-  .setPosition(850,225)
+  .setPosition(850,275)
   .setSize(500, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -57,7 +57,7 @@ void setupControls(){
   ;
   
   cP5.addBang("run_l_blast")
-  .setPosition(850,275)
+  .setPosition(850,325)
   .setSize(500, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -69,7 +69,7 @@ void setupControls(){
   ;
   
   cP5.addBang("run_r_clean")
-  .setPosition(850,425)
+  .setPosition(850,495)
   .setSize(500, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -81,7 +81,7 @@ void setupControls(){
   ;
   
   cP5.addBang("run_r_blast")
-  .setPosition(850,475)
+  .setPosition(850,545)
   .setSize(500, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings

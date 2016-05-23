@@ -141,7 +141,7 @@ static MultiStepper steppers;
 
 static float limit_top = 550.0; // Distance to top blast limit
 static float limit_bottom = -100.0; // Distance to bottom blast limit
-static float limit_right = 1950.0; // Distance to right blast limit
+static float limit_right = 1985.0; // Distance to right blast limit
 static float limit_left = 0.0; // Distance to left blast limit
 
 static bool hardLimits = 1; // Disable (0) / Enable (1) Movement Constraints

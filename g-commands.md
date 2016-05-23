@@ -1,16 +1,16 @@
-###G00 - MOVE TO POSITION
+###G00 - MOVE TO POSITION (AIR ONLY)
 * X = X Position in MM (FLOAT)
 * Y = Y Position in MM (FLOAT)
 * F = Feedrate in MM/S (FLOAT)
 * `G00 X100.0 Y50.0 F50.0`
 
-###G01 - BLAST LINE TO POSITION
+###G01 - BLAST LINE TO POSITION (BLAST + AIR)
 * X = X Position in MM (FLOAT)
 * Y = Y Position in MM (FLOAT)
 * F = Feedrate in MM/S (FLOAT)
 * `G01 X100.0 Y50.0 F50.0`
 
-###G02 - BLAST CLOCKWISE ARC TO POSITION
+###G02 - BLAST CLOCKWISE ARC TO POSITION (BLAST + AIR)
 * I = X Position of Arc Center in MM (FLOAT)
 * J = Y Position of Arc Center in MM (FLOAT)
 * X = X Destination in MM (FLOAT)
@@ -18,14 +18,14 @@
 * F = Feedrate in MM/S (FLOAT)
 * `G02 I100.0 J50.0 X200.0 Y50.0 F100.0`
 
-###G03 - BLAST COUNTER-CLOCKWISE ARC TO POSITION
+###G03 - BLAST COUNTER-CLOCKWISE ARC TO POSITION (BLAST + AIR)
 * See G02
 
-###G04 - PAUSE (BLAST OFF)
+###G04 - PAUSE (AIR ONLY)
 * P = Pause Duration in Milliseconds (FLOAT)
 * `G04 P1500.0`
 
-###G05 - DWELL (BLAST ON)
+###G05 - DWELL (BLAST + AIR)
 * P = Pause Duration in Milliseconds (FLOAT)
 * `G05 P1500.0`
 
@@ -42,7 +42,7 @@
 * Y = Y-axis Microsteps (INT)
 * `D05 X4 Y8`
 
-###D10 - UPDATE FEEDRATE
+###D10 - UPDATE FEEDRATE IN MM/S
 * F = FeedRate (FLOAT)
 * A = Acceleration Toggle (0/1)
 * B = Bias Toggle (0/1)

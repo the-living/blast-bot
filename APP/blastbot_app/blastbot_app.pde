@@ -149,10 +149,9 @@ void draw() {
   text(boardName, 850, 90);
   
   float scalar = 500.0 / Lboard_svg.width;
-  shape(Lboard_svg, 850, 215, Lboard_svg.width*scalar, Lboard_svg.height*scalar);
-
-  if (!R_blast) {
-    shape(Rboard_svg, 850, 415, -Rboard_svg.width*scalar, Rboard_svg.height*scalar);
+  shape(Lboard_svg, 850, 265, Lboard_svg.width*scalar, Lboard_svg.height*scalar);
+  if (R_clean) {
+    shape(Rboard_svg, 1350, 485, Rboard_svg.width*scalar, Rboard_svg.height*scalar);
   }
 
   fill(0);
