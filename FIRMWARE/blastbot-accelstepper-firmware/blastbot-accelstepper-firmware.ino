@@ -44,7 +44,7 @@
 // GCODE commands
 #define BAUD          	(115200) // Serial comm bitrate
 #define MAX_BUF       	(64) // Serial input buffer size
-#define TIMEOUT_OK    	(500) // Timeout length
+#define TIMEOUT_OK    	(200) // Timeout length
 
 // STEPPER MOTOR CONTROLS
 // MX - X-axis motors

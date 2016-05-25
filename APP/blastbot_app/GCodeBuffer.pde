@@ -17,20 +17,14 @@ class GCodeBuffer {
   void write( String code ){
     String gcode;
     
-    //***NOTE***//
-    //Line numbers and checksums have been disabled for
-    //single-pass testing
+    if (code.charAt(0) == '$'){
+      currentPath = code.substring(3,code.indexOf("*")-3);
+    } else {
     
-    //Generate Line Number
-    //String ln = "N" + str( GCode.size());
-    //gcode = ln + " " + code;
+      gcode = code;
     
-    //String cs = generateChecksum(gcode);
-    //gcode += cs;
-    
-    gcode = code + "\n";
-    
-    GCode.add(gcode);
+      GCode.add(gcode);
+    }
   }
   
   //SEND NEXT function
@@ -40,7 +34,20 @@ class GCodeBuffer {
     String r = GCode.get(0);
     GCode.remove(0);
     
-    return r;
+    //PULL CURRENT POSITION
+    posx = parseNumber(r, "X", posx);
+    posy = parseNumber(r, "Y", posy);
+         
+    //PULL LINE NUMBER
+    lineNum = parseString(r, "N", lineNum);
+    timeLeft = parseString(r, "*", timeLeft);
+    
+    int startIndex = 0;
+    if ( r.charAt(0) == 'N' ) startIndex = r.indexOf(" ")+1;
+    int endIndex = r.indexOf(" *");
+    if( endIndex == -1 ) endIndex = r.length();
+
+    return r.substring(startIndex, endIndex) + "\n";
   }
   
   //GET END function

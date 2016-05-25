@@ -9,6 +9,92 @@ protected String generateChecksum(String line) {
   return "*"+((int)checksum);
 }
 
+void serialConnect(){
+  String[] ports = Serial.list();
+  
+  if( ports.length > 0 ){
+    port = ports[0];
+    myPort = new Serial(this, port, 115200);
+    connected = true;
+    cP5.get(Bang.class, "serial").setColorForeground(color(255));
+  } else {
+    connected = false;
+    cP5.get(Bang.class, "serial").setColorForeground(color(255));
+  }
+  
+}
+
+float parseNumber(String s, String C, float f){
+  int index = s.indexOf(C);
+  
+  if( index == -1 ){
+    return f;
+  }
+  
+  int endIndex = s.indexOf(" ", index);
+  
+  if( endIndex == -1 ){
+    endIndex = s.length();
+  }  
+  
+  val = s.substring( index+1, endIndex );
+  
+  return float(val);
+}
+
+String parseString( String s, String C, String d){
+  int index = s.indexOf(C);
+  
+  if( index == -1 ){
+    return d;
+  }
+  
+  int endIndex = s.indexOf(" ", index);
+  
+  if( endIndex == -1 ){
+    endIndex = s.length();
+  }  
+  
+  val = s.substring( index+1, endIndex );
+  
+  return val;
+}
+
+void moveOff(){
+  //Move below board
+  lastx = posx;
+  lasty = posy;
+  
+  String s = "G00 Y-50.0 F300.0";
+  interrupt.write(s);
+  
+  //Pause for 6 seconds to allow blast to stop
+  s = "G04 P6000.0";
+  interrupt.write(s);
+  
+  //Move home
+  s = "G00 X0 F300.0";
+  interrupt.write(s);
+  s = "G00 X0 Y0 F300.0";
+  interrupt.write(s);
+}
+
+void moveOn(){
+  //return to below last position
+  String s = "G00 Y-50 F300.0";
+  interrupt.write(s);
+  s = "G00 X"+lastx+" F300.0";
+  interrupt.write(s);
+  
+  //start blast stream
+  s = "G05 P3000.0";
+  interrupt.write(s);
+  
+  //move up to last position
+  s = "G01 Y"+lasty+" F300.0";
+  interrupt.write(s);
+}
+
 void checkFiles(){
   //load board name
   boardName = loadStrings("LOADED_BOARD.txt")[0].substring(3);

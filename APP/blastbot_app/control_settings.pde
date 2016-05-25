@@ -17,8 +17,8 @@ void setupControls(){
   //---------------------------------------------------------------------------
   //Issues typed out GCODE command
   cP5.addTextfield("cmd_entry")
-  .setPosition( 50, 620 )
-  .setSize( 700, 50 )
+  .setPosition( 25, 420 )
+  .setSize( 550, 50 )
   .setFont( fontL )
   .setFocus( true )
   .setColor( color(0) )
@@ -32,9 +32,22 @@ void setupControls(){
   ;
   
   //FILE CONTROLS
+  cP5.addBang("serial")
+  .setPosition(500,850)
+  .setSize(80, 25)
+  .setTriggerEvent(Bang.RELEASE)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(0)
+  .setFont(fontS)
+  .setText("RECONNECT")
+  ;
+  
+  //FILE CONTROLS
   cP5.addBang("refresh")
-  .setPosition(850,100)
-  .setSize(250, 25)
+  .setPosition(650,55)
+  .setSize(250, 35)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -44,9 +57,22 @@ void setupControls(){
   .setText("REFRESH")
   ;
   
+  cP5.addBang("pause")
+  .setPosition(650, 780)
+  .setSize(700, 110)
+  .setTriggerEvent(Bang.RELEASE)
+  .setColorForeground(pauseColor)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(255)
+  .setFont(fontL)
+  .setText("PAUSE")
+  ;
+  
   cP5.addBang("run_l_clean")
-  .setPosition(850,275)
-  .setSize(500, 45)
+  .setPosition(650,250)
+  .setSize(700, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -57,8 +83,8 @@ void setupControls(){
   ;
   
   cP5.addBang("run_l_blast")
-  .setPosition(850,325)
-  .setSize(500, 45)
+  .setPosition(650,300)
+  .setSize(700, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -69,8 +95,8 @@ void setupControls(){
   ;
   
   cP5.addBang("run_r_clean")
-  .setPosition(850,495)
-  .setSize(500, 45)
+  .setPosition(650,495)
+  .setSize(700, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -81,8 +107,8 @@ void setupControls(){
   ;
   
   cP5.addBang("run_r_blast")
-  .setPosition(850,545)
-  .setSize(500, 45)
+  .setPosition(650,545)
+  .setSize(700, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -92,126 +118,13 @@ void setupControls(){
   .setText("RUN R BLASTING")
   ;
 
-  //MOTOR TOGGLES
-  //---------------------------------------------------------------------------
-  //X-AXIS TOGGLE - Top-Left
-  cP5.addToggle("x")
-  .setPosition(50, 50)
-  .setSize(50, 50)
-  //caption settings
-  .getCaptionLabel()
-  .alignX(ControlP5.LEFT)
-  .setColor(0)
-  .setFont(fontM)
-  .setText("X")
-  ;
-  //Y-AXIS TOGGLE - Top-Right
-  cP5.addToggle("y")
-  .setPosition(500, 50)
-  .setSize(50, 50)
-  //caption settings
-  .getCaptionLabel()
-  .alignX(ControlP5.RIGHT)
-  .setColor(0)
-  .setFont(fontM)
-  .setText("Y")
-  ;
-
-  //MOTOR JOGGING
-  //---------------------------------------------------------------------------
-  //JOG FORWARD BUTTON
-  //Send jog forward signal to all selected motors
-  cP5.addBang("jog_forward")
-  .setPosition(600, 50)
-  .setSize(95, 45)
-  .setTriggerEvent(Bang.RELEASE)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(255)
-  .setFont(fontM)
-  .setText("F")
-  ;
-
-  //JOG BACKWARD BUTTON
-  //Send jog backward signal to all selected motors
-  cP5.addBang("jog_backward")
-  .setPosition(600, 100)
-  .setSize(95, 45)
-  .setTriggerEvent(Bang.RELEASE)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(255)
-  .setFont(fontM)
-  .setText("RW")
-  ;
-  
-  //JOG FORWARD BUTTON
-  //Send jog forward signal to all selected motors
-  cP5.addBang("jog_forward_ff")
-  .setPosition(700, 50)
-  .setSize(95, 45)
-  .setTriggerEvent(Bang.RELEASE)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(255)
-  .setFont(fontM)
-  .setText("FF")
-  ;
-
-  //JOG BACKWARD BUTTON
-  //Send jog backward signal to all selected motors
-  cP5.addBang("jog_backward_ff")
-  .setPosition(700, 100)
-  .setSize(95, 45)
-  .setTriggerEvent(Bang.RELEASE)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(255)
-  .setFont(fontM)
-  .setText("FRW")
-  ;
-
-  //MOTOR ENABLE/DISABLE
-  //---------------------------------------------------------------------------
-  //DISABLE BUTTON
-  //Send disengage signal to all selected motors
-  cP5.addBang("step_f")
-  .setPosition(600, 200)
-  .setSize(98, 50)
-  .setTriggerEvent(Bang.RELEASE)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(255)
-  .setFont(fontS)
-  .setText("STEP+")
-  ;
-
-  //ENABLE BUTTON
-  //Send engage signal to all selected motors
-  cP5.addBang("step_b")
-  .setPosition(702, 200)
-  .setSize(98, 50)
-  .setTriggerEvent(Bang.RELEASE)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(255)
-  .setFont(fontS)
-  .setText("STEP-")
-  ;
-
   //SPRAYER ENABLE/DISABLE
   //---------------------------------------------------------------------------
   //DISABLE BUTTON
   //Turns off blast
   cP5.addBang("blast_off")
-  .setPosition(600, 275)
-  .setSize(98, 50)
+  .setPosition(400, 50)
+  .setSize(95, 95)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -224,8 +137,8 @@ void setupControls(){
   //ENABLE BUTTON
   //Turns on sprayer
   cP5.addBang("blast_on")
-  .setPosition(702, 275)
-  .setSize(98, 50)
+  .setPosition(500, 50)
+  .setSize(95, 95)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -237,8 +150,8 @@ void setupControls(){
   //DISABLE BUTTON
   //Turns off sprayer
   cP5.addBang("air_off")
-  .setPosition(600, 330)
-  .setSize(98, 50)
+  .setPosition(400, 150)
+  .setSize(95, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -251,8 +164,8 @@ void setupControls(){
   //ENABLE BUTTON
   //Turns on sprayer
   cP5.addBang("air_on")
-  .setPosition(702, 330)
-  .setSize(98, 50)
+  .setPosition(500, 150)
+  .setSize(95, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -262,27 +175,12 @@ void setupControls(){
   .setText("AIR ON")
   ;
 
-  //INITIAL SPOOL UP
-  //---------------------------------------------------------------------------
-
-  //Send teleport signal
-  cP5.addToggle("fast_mode")
-  .setPosition(600, 400)
-  .setSize(200, 45)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(0)
-  .setFont(fontM)
-  .setText("FAST MODE")
-  ;
-
   //TELEPORT
   //---------------------------------------------------------------------------
 
   //Send teleport signal
   cP5.addBang("teleport")
-  .setPosition(600, 450)
+  .setPosition(400, 250)
   .setSize(200, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -298,7 +196,7 @@ void setupControls(){
 
   //Send test pattern signal
   cP5.addBang("test_pattern")
-  .setPosition(600, 500)
+  .setPosition(400, 300)
   .setSize(200, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -314,8 +212,8 @@ void setupControls(){
 
   //GO HOME
   cP5.addBang("go_home")
-  .setPosition(250,250)
-  .setSize(100,100)
+  .setPosition(165,165)
+  .setSize(70,70)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -327,7 +225,7 @@ void setupControls(){
   
   //X +100 BUTTON
   cP5.addBang("x_100")
-  .setPosition(500, 275)
+  .setPosition(300, 175)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -340,7 +238,7 @@ void setupControls(){
 
   //X +10 BUTTON
   cP5.addBang("x_10")
-  .setPosition(445, 275)
+  .setPosition(245, 175)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -353,7 +251,7 @@ void setupControls(){
 
   //X -100 BUTTON
   cP5.addBang("x_-100")
-  .setPosition(50, 275)
+  .setPosition(50, 175)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -366,7 +264,7 @@ void setupControls(){
 
   //X -10 BUTTON
   cP5.addBang("x_-10")
-  .setPosition(105, 275)
+  .setPosition(105, 175)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -377,9 +275,9 @@ void setupControls(){
   .setText("X -10")
   ;
 
-  //X +100 BUTTON
+  //Y +100 BUTTON
   cP5.addBang("y_100")
-  .setPosition(275, 50)
+  .setPosition(175, 50)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -392,7 +290,7 @@ void setupControls(){
 
   //Y +10 BUTTON
   cP5.addBang("y_10")
-  .setPosition(275, 105)
+  .setPosition(175, 105)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -405,7 +303,7 @@ void setupControls(){
 
   //Y -100 BUTTON
   cP5.addBang("y_-100")
-  .setPosition(275,500)
+  .setPosition(175,300)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -418,7 +316,7 @@ void setupControls(){
 
   //Y -10 BUTTON
   cP5.addBang("y_-10")
-  .setPosition(275, 445)
+  .setPosition(175, 245)
   .setSize(50, 50)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
