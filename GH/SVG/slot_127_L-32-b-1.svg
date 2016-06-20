@@ -55,9 +55,11 @@
 <path d="M 2484.78700208 17.5 L 2494.78700208 7.5 L 2484.78700208 -2.5" stroke="#969696" fill="none" stroke-width="1px" />
 <path d="M 2484.78700208 -2.5 L 1675.0 -2.5" stroke="#969696" fill="none" stroke-width="1px" />
 <path d="M 1675.0 -2.5 L 1665.0 -12.5 L 1675.0 -22.5" stroke="#969696" fill="none" stroke-width="1px" />
-<path d="M 0.0 235.0 L 1250.0 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 0.0 235.0 L 1250.0 235.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 1250.0 235.0 L 1250.0 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 1260.0 85.0 L 1260.0 125.0" stroke="#0095FF" fill="none" stroke-width="2px" />
-<path d="M 2494.78700208 235.0 L 2080.0 125.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 2494.78700208 235.0 L 2080.0 235.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 2080.0 235.0 L 2080.0 125.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 2060.0 145.0 L 2060.0 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 1250.0 115.0 L 1260.0 115.0" stroke="#FF0000" fill="none" stroke-width="4px" />
 <path d="M 1260.0 115.0 L 1270.0 115.0" stroke="#FF0000" fill="none" stroke-width="4px" />

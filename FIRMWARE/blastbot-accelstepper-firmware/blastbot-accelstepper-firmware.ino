@@ -290,7 +290,11 @@ static void line( float x, float y) {
   if (hardLimits){
   	// Enforce hard limits to prevent machine from moving beyond workspace
   	if (x > limit_right or x < limit_left or y > limit_top or y < limit_bottom){
-  		Serial.println( "OUTOFBOUNDS" );
+  		Serial.print( "OUTOFBOUNDS (" );
+      Serial.print(x);
+      Serial.print(", ");
+      Serial.print(y);
+      Serial.println(")");
   		return; // Escape out of command
   	}
   }

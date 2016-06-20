@@ -17,9 +17,11 @@ void serialConnect(){
     myPort = new Serial(this, port, 115200);
     connected = true;
     cP5.get(Bang.class, "serial").setColorForeground(color(255));
+    cP5.get(Bang.class, "clear").setColorForeground(color(255));
   } else {
     connected = false;
     cP5.get(Bang.class, "serial").setColorForeground(color(255));
+    cP5.get(Bang.class, "clear").setColorForeground(color(255));
   }
   
 }
@@ -80,6 +82,11 @@ void moveOff(){
 }
 
 void moveOn(){
+  //check if at last position
+  if (posx == lastx && posy == lasty){
+    return;
+  }
+  
   //return to below last position
   String s = "G00 Y-50 F300.0";
   interrupt.write(s);
@@ -87,7 +94,7 @@ void moveOn(){
   interrupt.write(s);
   
   //start blast stream
-  s = "G05 P3000.0";
+  s = "G05 P8000.0";
   interrupt.write(s);
   
   //move up to last position

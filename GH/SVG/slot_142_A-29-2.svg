@@ -27,9 +27,11 @@
 <path d="M 10.0 17.5 L 0.0 7.5 L 10.0 -2.5" stroke="#969696" fill="none" stroke-width="1px" />
 <path d="M 10.0 -2.5 L 1322.95833333 -2.5" stroke="#969696" fill="none" stroke-width="1px" />
 <path d="M 1322.95833333 -2.5 L 1332.95833333 -12.5 L 1322.95833333 -22.5" stroke="#969696" fill="none" stroke-width="1px" />
-<path d="M 0.0 235.0 L 274.766666665 125.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 0.0 235.0 L 274.766666665 235.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 274.766666665 235.0 L 274.766666665 125.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 304.766666665 145.0 L 304.766666665 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
-<path d="M 314.766666665 115.0 L 584.766666665 185.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 314.766666665 115.0 L 584.766666665 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 584.766666665 115.0 L 584.766666665 185.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 614.766666665 205.0 L 614.766666665 175.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 274.766666665 125.0 L 284.766666665 125.0" stroke="#FF0000" fill="none" stroke-width="4px" />
 <path d="M 284.766666665 125.0 L 294.766666665 125.0" stroke="#FF0000" fill="none" stroke-width="4px" />

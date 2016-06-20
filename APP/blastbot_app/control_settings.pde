@@ -32,9 +32,10 @@ void setupControls(){
   ;
   
   //FILE CONTROLS
+  //FILE CONTROLS
   cP5.addBang("serial")
-  .setPosition(500,850)
-  .setSize(80, 25)
+  .setPosition(480,850)
+  .setSize(100, 25)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
   .getCaptionLabel()
@@ -42,6 +43,19 @@ void setupControls(){
   .setColor(0)
   .setFont(fontS)
   .setText("RECONNECT")
+  ;
+  
+    //FILE CONTROLS
+  cP5.addBang("clear")
+  .setPosition(480,820)
+  .setSize(100, 25)
+  .setTriggerEvent(Bang.RELEASE)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(0)
+  .setFont(fontS)
+  .setText("CLEAR BUFFER")
   ;
   
   //FILE CONTROLS
@@ -177,10 +191,22 @@ void setupControls(){
 
   //TELEPORT
   //---------------------------------------------------------------------------
-
+  
+  //TOGGLE OVERRIDE MODE
+  cP5.addToggle("override")
+  .setPosition(400, 280)
+  .setSize(200, 45)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(0)
+  .setFont(fontM)
+  .setText("OVERRIDE OFF")
+  ;
+  
   //Send teleport signal
   cP5.addBang("teleport")
-  .setPosition(400, 250)
+  .setPosition(400, 330)
   .setSize(200, 45)
   .setTriggerEvent(Bang.RELEASE)
   //caption settings
@@ -195,17 +221,17 @@ void setupControls(){
   //---------------------------------------------------------------------------
 
   //Send test pattern signal
-  cP5.addBang("test_pattern")
-  .setPosition(400, 300)
-  .setSize(200, 45)
-  .setTriggerEvent(Bang.RELEASE)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(255)
-  .setFont(fontM)
-  .setText("RUN TEST PATTERN")
-  ;
+  //cP5.addBang("test_pattern")
+  //.setPosition(400, 330)
+  //.setSize(200, 45)
+  //.setTriggerEvent(Bang.RELEASE)
+  ////caption settings
+  //.getCaptionLabel()
+  //.align(ControlP5.CENTER, ControlP5.CENTER)
+  //.setColor(255)
+  //.setFont(fontM)
+  //.setText("RUN TEST PATTERN")
+  //;
 
   //AXIAL MOVE COMMANDS
   //---------------------------------------------------------------------------

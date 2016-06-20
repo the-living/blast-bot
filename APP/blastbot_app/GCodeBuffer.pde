@@ -22,7 +22,7 @@ class GCodeBuffer {
     } else {
     
       gcode = code;
-    
+      
       GCode.add(gcode);
     }
   }

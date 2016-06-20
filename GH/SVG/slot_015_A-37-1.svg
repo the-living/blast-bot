@@ -55,14 +55,19 @@
 <path d="M 2884.54166667 17.5 L 2894.54166667 7.5 L 2884.54166667 -2.5" stroke="#969696" fill="none" stroke-width="1px" />
 <path d="M 2884.54166667 -2.5 L 1685.0 -2.5" stroke="#969696" fill="none" stroke-width="1px" />
 <path d="M 1685.0 -2.5 L 1675.0 -12.5 L 1685.0 -22.5" stroke="#969696" fill="none" stroke-width="1px" />
-<path d="M 0.0 235.0 L 340.0 105.0" stroke="#0095FF" fill="none" stroke-width="2px" />
-<path d="M 390.0 95.0 L 370.0 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 0.0 235.0 L 340.0 235.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 340.0 235.0 L 340.0 105.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 390.0 95.0 L 370.0 95.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 370.0 95.0 L 370.0 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 370.0 115.0 L 370.0 55.0" stroke="#0095FF" fill="none" stroke-width="2px" />
-<path d="M 340.0 55.0 L 870.0 75.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 340.0 55.0 L 870.0 55.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 870.0 55.0 L 870.0 75.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 880.0 105.0 L 880.0 65.0" stroke="#0095FF" fill="none" stroke-width="2px" />
-<path d="M 890.0 65.0 L 1320.0 105.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 890.0 65.0 L 1320.0 65.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 1320.0 65.0 L 1320.0 105.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 1340.0 125.0 L 1340.0 95.0" stroke="#0095FF" fill="none" stroke-width="2px" />
-<path d="M 2894.54166667 235.0 L 2020.0 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 2894.54166667 235.0 L 2020.0 235.0" stroke="#0095FF" fill="none" stroke-width="2px" />
+<path d="M 2020.0 235.0 L 2020.0 115.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 2000.0 95.0 L 2000.0 125.0" stroke="#0095FF" fill="none" stroke-width="2px" />
 <path d="M 340.0 105.0 L 350.0 105.0" stroke="#FF0000" fill="none" stroke-width="4px" />
 <path d="M 350.0 105.0 L 360.0 105.0" stroke="#FF0000" fill="none" stroke-width="4px" />

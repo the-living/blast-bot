@@ -61,6 +61,7 @@ GCodeBuffer interrupt; //buffer for interrupt GCode commands
 int lineCount = 0; //index to keep track of multi-line commands
 
 Boolean paused = false;
+Boolean override = false;
 
 //initialize UX objects
 ControlP5 cP5; //controlP5 object

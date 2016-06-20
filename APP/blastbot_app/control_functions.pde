@@ -16,14 +16,22 @@ void controlEvent( ControlEvent theEvent ) {
 
       //pull value from text entry box
       String cmd = cP5.get(Textfield.class, "cmd_entry").getText();
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     //RESET ORIGIN
     //--------------------------------------------------------------------------
     if ( theEvent.getName().equals("teleport") ) {
       String cmd = gcodeTeleportOrigin();
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
       //reset position VARIABLES
       posx = 0;
       posy = 0;
@@ -31,14 +39,14 @@ void controlEvent( ControlEvent theEvent ) {
 
     //RUN TEST PATTERN
     //--------------------------------------------------------------------------
-    if ( theEvent.getName().equals("test_pattern") ) {
+    //if ( theEvent.getName().equals("test_pattern") ) {
 
-      String lines[] = loadStrings("toRun.txt");
-      for (int i = 0; i < lines.length; i++) {
-        GB.write( lines[i] );
-      }
+    //  String lines[] = loadStrings("toRun.txt");
+    //  for (int i = 0; i < lines.length; i++) {
+    //    GB.write( lines[i] );
+    //  }
       
-    }
+    //}
     
     //SERIAL Handling
     //--------------------------------------------------------------------------
@@ -47,6 +55,7 @@ void controlEvent( ControlEvent theEvent ) {
       lastx = posx;
       lasty = posy;
       
+      myPort.clear();
       myPort.stop(); 
       serialConnect();
       
@@ -61,6 +70,14 @@ void controlEvent( ControlEvent theEvent ) {
     
     //GCODE File Handling
     //--------------------------------------------------------------------------
+    //CLEAR BUFFER
+    if( theEvent.getName().equals("clear") ){
+      GB.flushBuffer();
+      lastx = 0.0;
+      lasty = 0.0;
+    }
+    
+    
     //REFRESH
     if( theEvent.getName().equals("refresh") ){
        checkFiles();
@@ -83,6 +100,26 @@ void controlEvent( ControlEvent theEvent ) {
           moveOn();
           paused = !paused;
   }
+    }
+    
+    // OVERRIDE
+    if ( theEvent.getName().equals("override") ) {
+      override = !override;
+      
+      if( override ){
+         //change button to ENABLED
+         cP5.get(Toggle.class, "override").setColorForeground(resumeColor);
+         cP5.get(Toggle.class, "override").setColorActive(resumeColor);
+         cP5.get(Toggle.class, "override").getCaptionLabel().setText("OVERRIDE ON");
+
+        } else {
+          cP5.get(Toggle.class, "override").setColorForeground(fgColor);
+          cP5.get(Toggle.class, "override").setColorBackground(bgColor);
+          cP5.get(Toggle.class, "override").setColorActive(fgColor);
+          cP5.get(Toggle.class, "override").getCaptionLabel().setText("OVERRIDE OFF");
+          
+  }
+      
     }
     
     //RUN L CLEAN
@@ -134,23 +171,39 @@ void controlEvent( ControlEvent theEvent ) {
     // ENABLE BLAST
     if ( theEvent.getName().equals("blast_on") ) {
       String cmd = gcodeBlastOn();
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
     // DISABLE BLAST
     if ( theEvent.getName().equals("blast_off") ) {
       String cmd = gcodeBlastOff();
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
     
     // ENABLE AIR
     if ( theEvent.getName().equals("air_on") ) {
       String cmd = gcodeAirOn();
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
     // DISABLE AIR
     if ( theEvent.getName().equals("air_off") ) {
       String cmd = gcodeAirOff();
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     // AXIAL MOVE COMMANDS
@@ -166,48 +219,80 @@ void controlEvent( ControlEvent theEvent ) {
     // X+100 MOVE
     if ( theEvent.getName().equals("x_100") ) {
       String cmd = "G00 X" + (posx + 100) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     // X+10 MOVE
     if ( theEvent.getName().equals("x_10") ) {
       String cmd = "G00 X" + (posx + 10) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     // X-100 MOVE
     if ( theEvent.getName().equals("x_-100") ) {
       String cmd = "G00 X" + (posx - 100) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     // X-10 MOVE
     if ( theEvent.getName().equals("x_-10") ) {
       String cmd = "G00 X" + (posx - 10) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
     // Y+100 MOVE
     if ( theEvent.getName().equals("y_100") ) {
       String cmd = "G00 Y" + (posy + 100) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     // Y+10 MOVE
     if ( theEvent.getName().equals("y_10") ) {
       String cmd = "G00 Y" + (posy + 10) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     // Y-100 MOVE
     if ( theEvent.getName().equals("y_-100") ) {
       String cmd = "G00 Y" + (posy - 100) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
 
     // Y-10 MOVE
     if ( theEvent.getName().equals("y_-10") ) {
       String cmd = "G00 Y" + (posy - 10) + " F50.0";
-      GB.write( cmd );
+      if( !override ){
+        GB.write( cmd );
+      } else {
+        interrupt.write( cmd );
+      }
     }
   }
 }
