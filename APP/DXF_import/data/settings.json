@@ -1,0 +1,42 @@
+{
+  "colors": {
+    "1": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        0,
+        0
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "2": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        255,
+        0
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "7": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        255,
+        255
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    }
+  },
+  "colorList": [
+    1,
+    2,
+    7
+  ]
+}
