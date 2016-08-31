@@ -22,11 +22,11 @@
       "dwell_time": 1000,
       "move_blast": false
     },
-    "7": {
+    "4": {
       "move_feed": 50,
       "dwell_blast": false,
       "display_color": [
-        255,
+        0,
         255,
         255
       ],
@@ -37,6 +37,6 @@
   "colorList": [
     1,
     2,
-    7
+    4
   ]
 }
