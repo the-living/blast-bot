@@ -12,44 +12,90 @@
 //------------------------------------------------------------------------------
 // EXTERNAL DEPENDENCIES
 //------------------------------------------------------------------------------
-// ControlP5 library
-// http://www.sojamo.de/libraries/controlP5/
 import controlP5.*;
+import processing.serial.*;
+
+//------------------------------------------------------------------------------
+// GLOBAL VARIABLES
+//------------------------------------------------------------------------------
 
 //UI Variables
 ControlP5 cP5;
 PFont font24, font18, font16i, font14, font12;
 color black, white, grey, charcoal, green, red, blue;
-PVector origin = new PVector(25,250);
+PVector origin;
 
 //File Variables
-String currentPath = "TEST.DXF";
-StringList lastVal = new StringList("TEST RX");
-String lastSent = "G00 X0 Y0 F1.0";
-String timeLeft = "0:00:00";
-int geoCount = 0;
-int lastGeo = 0;
+String currentPath;
+String fullPath;
+Boolean loaded;
+Boolean processed;
+
+//Command Variables
+StringList geoGCODE;
+StringList manualGCODE;
+StringList lastVal;
+String lastSent;
+String timeLeft;
+int geoCount;
+int lastGeo;
 
 //Operation Variables
-float posx, posy, lastx, lasty = 0.0;
-float lastf = 50.0;
+float posx, posy, lastx, lasty;
+float lastf;
+Boolean paused;
+Boolean override;
 
+//Serial Variables
+Serial myPort;
+Boolean connected;
+String port;
+
+
+//------------------------------------------------------------------------------
+// SETUP
+//------------------------------------------------------------------------------
 void setup(){
   settings();
   
+  initVariables();
   initFonts();
   initColors();
   setupControls();
   
 }
 
+//------------------------------------------------------------------------------
+// DRAW LOOP
+//------------------------------------------------------------------------------
 void draw(){
   displayUI();
   displayStats();
-  
-  
 }
 
+//------------------------------------------------------------------------------
+// APP SETTINGS
+//------------------------------------------------------------------------------
 void settings(){
   size(1200,800);
+}
+
+void initVariables(){
+  origin = new PVector(25,250);
+  currentPath = "No file loaded.";
+  loaded = false;
+  processed = false;
+  lastVal = new StringList("...");
+  lastSent = "...";
+  timeLeft = "0:00:00";
+  geoCount = 0;
+  lastGeo = 0;
+  posx = 0.0;
+  posy = 0.0;
+  lastx = 0.0;
+  lasty = 0.0;
+  lastf = 25.0;
+  paused = false;
+  override = false;
+  connected = false;
 }

@@ -1,3 +1,14 @@
+//////////////////////////////////////////
+//                                      //
+// UX INTERFACE                         //
+//                                      //
+//////////////////////////////////////////
+// Functions for generating UX          //
+//////////////////////////////////////////
+
+//DISPLAY UI
+//----------------------------------------
+//Draws user non-cP5 interface elements
 void displayUI() {
   background(0);
 
@@ -69,6 +80,9 @@ void displayUI() {
   line(795, 640, 1190, 640);
 }
 
+//DISPLAY STATS
+//----------------------------------------
+//Draws dynamic text elements elements
 void displayStats(){
   //PREVIEW AREA
   //Current Position
@@ -76,6 +90,17 @@ void displayStats(){
   fill(white);
   textFont(font24,24);
   text(pos,25,290);
+  
+  //Nozzle position
+  stroke(white);
+  fill(white,50);
+  strokeWeight(3);
+  ellipse(origin.x+lastx, origin.y-lasty,10,10);
+  noFill();
+  strokeWeight(0.5);
+  ellipse(origin.x+lastx, origin.y-lasty,20,20);
+  
+  
   
   //TX Command
   fill(green);
@@ -88,10 +113,23 @@ void displayStats(){
   text(pos,815,290);
   textAlign(LEFT);
   
+  //SERIAL Status
+  String status;
+  textFont(font18,18);
+  if(!connected){
+    status = "NOT CONNECTED";
+    fill(red);
+    text(status,25,45);
+  } else {
+    status = "CONNECTED ON " + port;
+    fill(green);
+    text(status, 25, 45);
+  }
+  
   //RX Value
   fill(red);
   textFont(font18,18);
-  float x_ = 25.0;
+  float x_ = 40.0 + textWidth(status);
   for ( int i = 0; i < lastVal.size(); i++ ) {
     text(lastVal.get(i), x_, 45);
     x_ += textWidth(lastVal.get(i));
@@ -373,10 +411,9 @@ void setupControls() {
   ;
   
   //OVERIDE button
-  cP5.addBang("override")
+  cP5.addToggle("override")
   .setPosition(347,570)
   .setSize(245,50)
-  .setTriggerEvent(Bang.RELEASE)
   .setColorForeground(white)
   //caption settings
   .getCaptionLabel()
@@ -514,5 +551,18 @@ void setupControls() {
   .setColor(black)
   .setFont(font14)
   .setText("BLAST")
+  ;
+  //UPDATE SETTINGS button
+  cP5.addBang("update")
+  .setPosition(850,740)
+  .setSize(250,50)
+  .setTriggerEvent(Bang.RELEASE)
+  .setColorForeground(black)
+  //caption settings
+  .getCaptionLabel()
+  .align(ControlP5.CENTER, ControlP5.CENTER)
+  .setColor(white)
+  .setFont(font14)
+  .setText("UPDATE SETTINGS")
   ;
 }
