@@ -8,7 +8,7 @@
 // Convert JSON of geometry to GCODE commands
 //
 void genGCODE( JSONObject json ){
-  StringList GCODE = new StringList();
+  GCODE = new StringList();
   
   JSONObject layers = json.getJSONObject("layers");
   JSONArray layerList = json.getJSONArray("layerList");
@@ -45,7 +45,9 @@ void genGCODE( JSONObject json ){
       }
       
       for(int k = 0; k < code.size(); k++){
-        GCODE.append( code.get(k) );
+        String line = "N"+k+" "+code.get(k);
+        line += generateChecksum(line);
+        GCODE.append( line );
       }
     }
   }

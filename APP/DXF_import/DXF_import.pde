@@ -7,6 +7,7 @@ String[][] ent;
 
 Boolean VERBOSE = false;
 
+StringList GCODE;
 JSONObject json;
 JSONObject colorSettings;
 JSONObject colorACD;
@@ -17,7 +18,6 @@ float padding = 100.0;
 
 void setup(){
   size(1200,400);
-  frameRate(10);
   
   //load DXF file line-by-line
   selectInput("Select DXF file to process:", "fileSelected"); 
@@ -53,8 +53,15 @@ void draw(){
     loadData( fp );
   } else if (loaded) {
     strokeWeight(5);
-    displayGeo(json, counter);
-    counter++;
+    //displayGeo(json, counter);
+    displayGCODE( GCODE, counter );
+    if(GCODE.size() < 1000){
+      if(frameCount % 10 == 0){
+        counter++;
+      }
+    } else {
+        counter++;
+    }
   }
 }
 
