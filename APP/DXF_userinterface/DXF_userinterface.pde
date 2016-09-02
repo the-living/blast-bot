@@ -4,7 +4,7 @@
 // v.1 2016.08.30
 //
 // /////////////////////////////////////////////////////////////////////////////
-// 
+//
 // UI Setup
 //
 // /////////////////////////////////////////////////////////////////////////////
@@ -32,8 +32,8 @@ Boolean loaded;
 Boolean processed;
 
 //Command Variables
-StringList geoGCODE;
-StringList manualGCODE;
+GCODEbuffer GB;
+GCODEbuffer interrupt;
 StringList lastVal;
 String lastSent;
 String timeLeft;
@@ -57,12 +57,12 @@ String port;
 //------------------------------------------------------------------------------
 void setup(){
   settings();
-  
+
   initVariables();
   initFonts();
   initColors();
   setupControls();
-  
+
 }
 
 //------------------------------------------------------------------------------
