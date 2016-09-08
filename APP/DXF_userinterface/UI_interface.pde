@@ -163,6 +163,17 @@ void displayStats(){
   //strokeWeight(1);
   
   if( colorLoaded ){
+    int buttonSize, buttonSpacing, rowLength;
+    if(colors.size() < 12){
+      buttonSize = 50;
+      buttonSpacing = 55;
+      rowLength = 3;
+    } else{
+      buttonSize = 36;
+      buttonSpacing = 41;
+      rowLength = 4;
+    }
+    
     for(int i = 0; i < colors.size(); i++){
       if( selectedColor == colors.get(i) ){
         stroke(blue);
@@ -171,7 +182,7 @@ void displayStats(){
         stroke(black);
         strokeWeight(1);
       }
-      rect(colorPos.x + 55*(i%3), colorPos.y + 55*floor(i/3), 51, 51);
+      rect(colorPos.x + buttonSpacing*(i%rowLength), colorPos.y + buttonSpacing*floor(i/rowLength), buttonSize+1, buttonSize+1);
     }
   }
   
@@ -189,7 +200,7 @@ void initColors() {
   black = color(0);
   white = color(255);
   grey = color(220);
-  charcoal = color(200);
+  charcoal = color(100);
   red = color(237, 28, 36);
   green = color(57, 181, 74);
   blue = color(80, 150, 225);
@@ -234,19 +245,6 @@ void setupControls() {
   .setColor(white)
   .setFont(font24)
   .setText("PAUSE")
-  ;
-  //RESET button
-  cP5.addBang("reset")
-  .setPosition(1045,260)
-  .setSize(140, 40)
-  .setTriggerEvent(Bang.RELEASE)
-  .setColorForeground(white)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(black)
-  .setFont(font18)
-  .setText("RESET")
   ;
   //RUN PREVIEW button
   cP5.addBang("preview")
@@ -435,18 +433,6 @@ void setupControls() {
   .setText("AIR ON")
   ;
   
-  //OVERIDE button
-  cP5.addToggle("override")
-  .setPosition(347,570)
-  .setSize(245,50)
-  .setColorForeground(white)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(black)
-  .setFont(font14)
-  .setText("OVERRIDE OFF")
-  ;
   //SET ORIGIN button
   cP5.addBang("origin")
   .setPosition(347,625)
@@ -585,16 +571,31 @@ void generateColors(){
   PVector colorPos = new PVector(615,540);
   
   JSONArray cList = colorSettings.getJSONArray("colorList");
+  
+  int buttonSize, buttonSpacing, rowLength;
+  if(cList.size() < 12){
+    buttonSize = 50;
+    buttonSpacing = 55;
+    rowLength = 3;
+  } else{
+    buttonSize = 36;
+    buttonSpacing = 41;
+    rowLength = 4;
+  }
+  
   for(int i = 0; i < cList.size(); i++){
     int c_index = cList.getInt(i);
     colors.append( c_index );
     JSONArray c_ = colorSettings.getJSONObject("colors").getJSONObject(str( c_index )).getJSONArray("display_color");
     color c = color(c_.getInt(0), c_.getInt(1), c_.getInt(2));
     String label = "color_" + str(c_index);
-
+    
+    
+    
+    
     cP5.addBang(label)
-    .setPosition(colorPos.x + 55*(i%3), colorPos.y + 55*floor(i/3))
-    .setSize(50,50)
+    .setPosition(colorPos.x + buttonSpacing*(i%rowLength), colorPos.y + buttonSpacing*floor(i/rowLength))
+    .setSize(buttonSize,buttonSize)
     .setTriggerEvent(Bang.RELEASE)
     .setColorForeground(c)
     .getCaptionLabel()

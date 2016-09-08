@@ -1,0 +1,162 @@
+{
+  "colors": {
+    "11": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        170,
+        170
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "241": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        170,
+        191
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "165": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        86,
+        96,
+        129
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "253": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        130,
+        130,
+        130
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "1": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        0,
+        0
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "2": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        255,
+        0
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "3": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        0,
+        255,
+        0
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "4": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        0,
+        255,
+        255
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "114": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        0,
+        129,
+        64
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "5": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        0,
+        0,
+        255
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "6": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        0,
+        255
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "7": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        255,
+        255
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    },
+    "30": {
+      "move_feed": 50,
+      "dwell_blast": false,
+      "display_color": [
+        255,
+        127,
+        0
+      ],
+      "dwell_time": 1000,
+      "move_blast": false
+    }
+  },
+  "colorList": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    11,
+    30,
+    114,
+    165,
+    241,
+    253
+  ]
+}

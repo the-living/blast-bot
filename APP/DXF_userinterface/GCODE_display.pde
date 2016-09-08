@@ -112,7 +112,7 @@ void addPoint(JSONObject pt, color c ) {
   float x = loc.getFloat(0);
   float y = loc.getFloat(1);
   
-  strokeWeight(4);
+  strokeWeight(8);
   stroke(c);
   noFill();
   p = createShape(POINT, origin.x+x*scalar, origin.y-y*scalar);
@@ -195,7 +195,7 @@ void addPolyline( JSONObject pl, color c ) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Render point from G04 or G05 command
 void renderGcodePoint( String code, PVector lastPt ){
-  strokeWeight(6);
+  strokeWeight(8);
   point( origin.x+lastPt.x*scalar, origin.y-lastPt.y*scalar );
 }
 

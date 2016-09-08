@@ -20,7 +20,7 @@ void controlEvent( ControlEvent theEvent ) {
       else GB.flushBuffer();
       break;
     case "pause":
-      paused = true;
+      paused = !paused;
       break;
     case "reset":
       running = false;
@@ -230,9 +230,10 @@ void processFile(){
 // LOCK BUTTON
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Allows setting of button lock and changing color
-void lockButton(Bang button, boolean lock, color c){
+void lockButton(Bang button, boolean lock, color c, color t){
   button.setLock(lock)
-  .setColorForeground(c);
+  .setColorForeground(c)
+  .getCaptionLabel().setColor(t);
 }
 
 // RELABEL BUTTON
@@ -256,54 +257,69 @@ void recolorButton(Bang button, color c1, color c2){
 void checkStatus(){
   Bang start = cP5.get(Bang.class, "start");
   Bang pause = cP5.get(Bang.class, "pause");
-  Bang reset = cP5.get(Bang.class, "reset");
+  
   Bang preview = cP5.get(Bang.class, "preview");
   Bang load = cP5.get(Bang.class, "load");
   Bang process = cP5.get(Bang.class, "process");
+  Bang update = cP5.get(Bang.class, "update");
   
   if(!loaded){
-    lockButton(process, true, grey);
+    lockButton(start, true, grey,charcoal);
+    lockButton(pause, true, grey,charcoal);
+    lockButton(preview, true, grey,charcoal);
+    lockButton(process, true, grey,charcoal);
+    lockButton(update,true,grey,charcoal);
   } else if(loaded && !processed){
-    lockButton(start, true, grey);
-    lockButton(pause, true, grey);
-    lockButton(reset, true, grey);
-    lockButton(preview, true, grey);
-    lockButton(process, false, black);
+    lockButton(start, true, grey,charcoal);
+    lockButton(pause, true, grey,charcoal);
+    lockButton(preview, true, grey,charcoal);
+    lockButton(process, false, black,white);
     relabelButton(process, "PROCESS FILE");
     recolorButton(process, black, blue);
-  } else if(runPreview){
-    lockButton(start, true, grey);
-    lockButton(pause, true, grey);
-    lockButton(reset, true, grey);
-    lockButton(load, true, grey);
-    lockButton(process, true, grey);
-  } else if(running){
-    lockButton(start, true, blue);
-    lockButton(pause, false, red);
-    lockButton(reset, true, grey);
-    lockButton(preview, true, grey);
-    lockButton(load, true, grey);
-    lockButton(process, true, grey);
-  } else if(paused){
-    lockButton(start, true, blue);
-    lockButton(pause, false, green);
-    relabelButton(pause, "RESUME");
-    recolorButton(pause, green, blue);
-    lockButton(reset, false, white);
-    lockButton(preview, true, grey);
-    lockButton(load, true, grey);
-    lockButton(process, true, grey);
-  } else if(loaded && processed) {
-    lockButton(start, false, green);
-    lockButton(pause, true, charcoal);
-    lockButton(reset, true, charcoal);
-    lockButton(preview, false, white);
-    lockButton(load, false, black);
-    lockButton(process, false, black);
-    
-    relabelButton(process, "REPROCESS FILE");
-    recolorButton(process, blue, black);
+    lockButton(update,false,black,white);
   }
+  
+  if(processed){
+    lockButton(start,false,green,white);
+    lockButton(preview,false,white,black);
+    relabelButton(process, "REPROCESS FILE");
+    recolorButton(process, blue, charcoal);
+  }
+  
+  if(runPreview){
+    lockButton(start,true,grey,charcoal);
+    lockButton(load, true, grey, charcoal);
+    lockButton(process, true, grey, charcoal);
+    lockButton(update, true, grey, charcoal);
+    recolorButton(preview, red, blue);
+    relabelButton(preview, "END PREVIEW");
+  } else if( running && !paused ){
+    lockButton(start, false, red, white);
+    relabelButton(start, "STOP");
+    lockButton(pause, false, blue, black);
+    recolorButton(pause, white, blue);
+    relabelButton(pause,"PAUSE");
+    lockButton(preview,true,grey,charcoal);
+    lockButton(load,true,grey,charcoal);
+    lockButton(process,true,grey,charcoal);
+    lockButton(update,true,grey,charcoal);
+  } else if(running && paused){
+    lockButton(pause, false, blue, white);
+    relabelButton(pause,"UNPAUSE");
+    recolorButton(pause,blue,charcoal);
+    lockButton(start, false, red, white);
+    relabelButton(start, "RESET");
+  }else if( loaded && processed ) {
+    lockButton(start,false,green,white);
+    relabelButton(start,"START");
+    lockButton(pause,true, grey, charcoal);
+    lockButton(preview,false,white,black);
+    lockButton(load,false,black,white);
+    lockButton(process,false,black,white);
+    lockButton(update,false,black,white);
+  }
+  
+  
 }
 
 // TOGGLE PREVIEW
