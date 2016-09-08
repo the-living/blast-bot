@@ -1,7 +1,7 @@
 {
   "colors": {
     "1": {
-      "move_feed": 50,
+      "move_feed": 10,
       "dwell_blast": false,
       "display_color": [
         255,
@@ -9,10 +9,10 @@
         0
       ],
       "dwell_time": 1000,
-      "move_blast": false
+      "move_blast": true
     },
     "2": {
-      "move_feed": 50,
+      "move_feed": 200,
       "dwell_blast": false,
       "display_color": [
         255,

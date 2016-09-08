@@ -1,10 +1,8 @@
-//////////////////////////////////////////
-//                                      //
-// UX INTERFACE                         //
-//                                      //
-//////////////////////////////////////////
-// Functions for generating UX          //
-//////////////////////////////////////////
+//------------------------------------------------------------------------------
+// UX Interface
+//------------------------------------------------------------------------------
+// Functions for generating US
+
 
 //DISPLAY UI
 //----------------------------------------
@@ -60,7 +58,7 @@ void displayUI() {
   text("SPEED SETTINGS", 615, 520);
   textFont(font16i, 16);
   text("CURRENT FILE", 795, 385);
-  text("GEO COUNT", 795, 450);
+  text("STEP COUNT", 795, 450);
   text("TIME ESTIMATE", 925, 450);
   text("G00", 795, 560);
   text("G01", 795, 580);
@@ -80,35 +78,43 @@ void displayUI() {
   line(795, 640, 1190, 640);
 }
 
+//RENDER NOZZLE POSITION
+//----------------------------------------
+//Draws nozzle position in the preview pane
+void renderNozzle(){
+  stroke(white);
+  fill(white,50);
+  strokeWeight(3);
+  ellipse(origin.x+(posx*scalar), origin.y-(posy*scalar),10,10);
+  noFill();
+  strokeWeight(0.5);
+  ellipse(origin.x+(posx*scalar), origin.y-(posy*scalar),20,20);
+}
+
 //DISPLAY STATS
 //----------------------------------------
 //Draws dynamic text elements elements
 void displayStats(){
   //PREVIEW AREA
   //Current Position
-  String pos = "( "+lastx+", "+lasty+" )";
+  String pos = "( "+posx+", "+posy+" )";
   fill(white);
   textFont(font24,24);
   text(pos,25,290);
-  
-  //Nozzle position
-  stroke(white);
-  fill(white,50);
-  strokeWeight(3);
-  ellipse(origin.x+lastx, origin.y-lasty,10,10);
-  noFill();
-  strokeWeight(0.5);
-  ellipse(origin.x+lastx, origin.y-lasty,20,20);
-  
-  
   
   //TX Command
   fill(green);
   text(lastSent, 40+textWidth(pos), 290);
   
-  //Preview Position
+  //Preview Position / Time Left
+  if(runPreview){
+    pos = lastGeo + "/" + geoCount;
+  } else if(running) {
+    pos = timeLeft;
+  } else {
+    pos ="";
+  }
   fill(white);
-  pos = lastGeo + "/" + geoCount;
   textAlign(RIGHT);
   text(pos,815,290);
   textAlign(LEFT);
@@ -148,7 +154,26 @@ void displayStats(){
   text(geoCount,795,480);
   
   //Time Estimate
-  text(timeLeft,925,480);
+  text(loader.time_estimate,925,480);
+  
+  //COLOR BORDERS
+  PVector colorPos = new PVector(614,539);
+  noFill();
+  //stroke(black);
+  //strokeWeight(1);
+  
+  if( colorLoaded ){
+    for(int i = 0; i < colors.size(); i++){
+      if( selectedColor == colors.get(i) ){
+        stroke(blue);
+        strokeWeight(2);
+      } else {
+        stroke(black);
+        strokeWeight(1);
+      }
+      rect(colorPos.x + 55*(i%3), colorPos.y + 55*floor(i/3), 51, 51);
+    }
+  }
   
 }
 
@@ -480,19 +505,6 @@ void setupControls() {
   .setFont(font12)
   .setText("PROCESS FILE")
   ;
-  //RECALCULATE TIME button
-  cP5.addBang("timeCalc")
-  .setPosition(1045,435)
-  .setSize(90,20)
-  .setTriggerEvent(Bang.RELEASE)
-  .setColorForeground(grey)
-  //caption settings
-  .getCaptionLabel()
-  .align(ControlP5.CENTER, ControlP5.CENTER)
-  .setColor(black)
-  .setFont(font12)
-  .setText("RECALCULATE")
-  ;
   
   //MOVE SPEED field
   cP5.addTextfield("moveSpeed")
@@ -566,3 +578,36 @@ void setupControls() {
   .setText("UPDATE SETTINGS")
   ;
 }
+
+void generateColors(){
+  colors = new IntList();
+  
+  PVector colorPos = new PVector(615,540);
+  
+  JSONArray cList = colorSettings.getJSONArray("colorList");
+  for(int i = 0; i < cList.size(); i++){
+    int c_index = cList.getInt(i);
+    colors.append( c_index );
+    JSONArray c_ = colorSettings.getJSONObject("colors").getJSONObject(str( c_index )).getJSONArray("display_color");
+    color c = color(c_.getInt(0), c_.getInt(1), c_.getInt(2));
+    String label = "color_" + str(c_index);
+
+    cP5.addBang(label)
+    .setPosition(colorPos.x + 55*(i%3), colorPos.y + 55*floor(i/3))
+    .setSize(50,50)
+    .setTriggerEvent(Bang.RELEASE)
+    .setColorForeground(c)
+    .getCaptionLabel()
+    .setText("")
+    ;
+  }
+}
+
+void clearColors(){
+  if( colors == null ) return;
+  
+  for(int i = colors.size()-1; i>=0; i--){
+    cP5.remove( "color_"+colors.get(i) );
+  }
+}
+    
